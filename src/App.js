@@ -1,6 +1,5 @@
 import React, { useEffect,  useState } from 'react';
 import './App.css';
-import recipe from './Recipe';
 import Recipe from './Recipe';
 
 
@@ -23,6 +22,7 @@ const App = () => {
   const getRecipes = async () => {
     const response = await fetch(`https://api.edamam.com/search?q=${query}&app_id=${APP_ID}&app_key=${APP_KEY}`);
     const data = await response.json();
+    console.log(data);
     setRecipes(data.hits);
   }
 
@@ -38,13 +38,13 @@ const App = () => {
 
   return(
     <div className="App">
-      <h1 className='site-header'>Find Recepies</h1>
+      <h1 className='site-header'>Recepies</h1>
       <form className="search-form" onSubmit={getSearch}>
-        <input type="text" className="search-bar" value={search} onChange={updateSearch}></input>
+        <input type="text" className="search-bar" value={search} onChange={updateSearch} placeholder="Search for recipe..."></input>
         <button type="submit" className="search-button">Search</button>
       </form>
       <div className="recipesList">
-        {recipes.map(recipe => (
+        {recipes.length <= 0 ? <h1>No Results were found</h1> : recipes.map((recipe, index) => (
           <Recipe 
             key={recipe.recipe.label}
             title={recipe.recipe.label}
